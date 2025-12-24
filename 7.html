@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Birthday Wishes Cards</title>
+<style>
+  :root{
+    --pink:#f03b8f;
+    --soft:#fff7de;
+    --muted:#7b6a8c;
+    --card-shadow: 0 12px 28px rgba(0,0,0,.14);
+  }
+  *{box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    background:linear-gradient(180deg,#ffeef8,#fff2e4);
+  }
+
+  .page{
+    width:100%;
+    max-width:430px;
+    margin:0 auto;
+    text-align:center;
+  }
+  h1{color:var(--pink);margin:8px 0 4px;font-size:1.4rem;}
+  p.lead{color:var(--muted);margin:0 0 18px;font-size:.95rem;}
+
+  .panel{
+    background:var(--soft);
+    border-radius:22px;
+    padding:18px;
+    box-shadow:var(--card-shadow);
+  }
+
+  /* cards list */
+  .cards{
+    display:grid;
+    gap:14px;
+    margin-bottom:14px;
+  }
+
+  /* flip card */
+  .flip {
+    perspective:1000px;
+  }
+  .card {
+    width:100%;
+    height:150px;
+    border-radius:14px;
+    position:relative;
+    cursor:pointer;
+    transform-style:preserve-3d;
+    transition:transform .10s cubic-bezier(.2,.9,.3,1);
+  }
+  .card.flipped{
+    transform:rotateY(180deg);
+  }
+  .card-face{
+    position:absolute;
+    inset:0;
+    backface-visibility:hidden;
+    border-radius:14px;
+    overflow:hidden;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 8px 20px rgba(0,0,0,.08);
+  }
+  .front{
+    background:#fff;
+    padding:8px;
+  }
+  .front img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:12px;
+    display:block;
+  }
+  .back{
+    transform:rotateY(180deg);
+    background:#fff;
+    padding:18px;
+    text-align:left;
+    color:var(--muted);
+  }
+  .back .title{
+    font-weight:700;color:#4b2b7f;margin-bottom:8px;
+  }
+  .back .message{
+    font-size:0.95rem;line-height:1.6;color:#5b4a60;
+  }
+
+  /* little badge top-right */
+  .small-badge{
+    position:absolute;right:10px;top:10px;background:linear-gradient(135deg,var(--pink),#ff74b8);width:28px;height:28px;border-radius:8px;color:#fff;font-size:14px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 18px rgba(240,59,143,.25);
+  }
+
+  /* progress */
+  .progress-wrap{margin-top:6px}
+  .progress-label{font-size:.92rem;color:var(--muted);margin-bottom:8px}
+  .progress{
+    height:8px;background:#ffe0f0;border-radius:99px;overflow:hidden;
+    box-shadow:inset 0 -2px 6px rgba(0,0,0,.03);
+  }
+  .progress > .bar{
+    height:100%;width:0%;background:linear-gradient(90deg,var(--pink),#ff74b8);transition:width .35s ease;
+  }
+  .foot-note{margin-top:12px;color:var(--muted);font-size:.9rem;}
+
+  /* modal (blurred background) */
+  .modal-backdrop{
+    position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.35);backdrop-filter:blur(4px);z-index:1000;
+  }
+  .modal{
+    width:88%;
+    max-width:360px;
+    background:#fff;border-radius:14px;padding:18px;text-align:center;box-shadow:0 18px 40px rgba(0,0,0,.25);
+  }
+  .modal h3{color:var(--pink);margin:6px 0 8px}
+  .modal p{color:var(--muted);margin:0 0 12px}
+  .modal .btn{
+    display:inline-block;padding:12px 20px;border-radius:999px;background:linear-gradient(135deg,var(--pink),#ff74b8);color:#fff;font-weight:700;text-decoration:none;box-shadow:0 12px 30px rgba(240,59,143,.35)
+  }
+  .modal .small{display:block;margin-top:10px;color:#9a7f9d;font-size:.86rem;cursor:pointer}
+
+  /* responsive card heights */
+  @media (max-width:420px){
+    .card{height:140px}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <h1>Birthday Wishes Cards 🎁</h1>
+  <p class="lead">Click each card to reveal a birthday message!</p>
+
+  <div class="panel">
+    <div class="cards" id="cardsContainer">
+      <!-- Card template repeated (images are placeholders) -->
+      <div class="flip" data-index="0">
+        <div class="card" role="button" tabindex="0" aria-pressed="false">
+          <div class="card-face front">
+            <img src="/bdy/img/Add a playful touch to your messages with this….jpg" alt="card image 1">
+            <div class="small-badge">✨</div>
+          </div>
+          <div class="card-face back">
+            <div class="title">Wish 1</div>
+            <div class="message">Happy Birthday Rashyeee , you are the man who makes every day feel like a dream! 🥳💞💘</div>
+            <button class="flipback" style="margin-top:12px;padding:8px 12px;border-radius:999px;border:none;background:#ffe9ff;color:var(--pink);cursor:pointer">Tap to flip back</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" data-index="1">
+        <div class="card" role="button" tabindex="0" aria-pressed="false">
+          <div class="card-face front">
+            <img src="/bdy/img/Add a playful touch to your messages with this….jpg" alt="card image 2">
+            <div class="small-badge">🌟</div>
+          </div>
+          <div class="card-face back">
+            <div class="title">Wish 2</div>
+            <div class="message">Thankyou for loving and caring me this much and I still can’t believe I get to call you mine.🥹 </div>
+            <button class="flipback" style="margin-top:12px;padding:8px 12px;border-radius:999px;border:none;background:#ffe9ff;color:var(--pink);cursor:pointer">Tap to flip back</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flip" data-index="2">
+        <div class="card" role="button" tabindex="0" aria-pressed="false">
+          <div class="card-face front">
+            <img src="/bdy/img/Add a playful touch to your messages with this….jpg" alt="card image 3">
+            <div class="small-badge">💖</div>
+          </div>
+          <div class="card-face back">
+            <div class="title">Wish 3</div>
+            <div class="message">i luv u soooo much daaaaaaa ✨💖</div>
+            <button class="flipback" style="margin-top:12px;padding:8px 12px;border-radius:999px;border:none;background:#ffe9ff;color:var(--pink);cursor:pointer">Tap to flip back</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="progress-wrap" style="margin-top:12px">
+      <div class="progress-label" id="progressLabel">Start discovering your birthday surprises 🎆</div>
+      <div class="progress" aria-hidden="true"><div class="bar" id="progressBar"></div></div>
+    </div>
+
+    <div class="foot-note" id="footNote" style="margin-top:12px">
+      Tap each card to reveal the wishes
+    </div>
+  </div>
+</div>
+
+<!-- Modal / Alert -->
+<div class="modal-backdrop" id="modal">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div style="font-size:28px;line-height:1">🎉</div>
+    <h3 id="modalTitle">All Birthday Wishes Unlocked!</h3>
+    <p>Each wish carries my love and hopes for your amazing new year ahead.</p>
+    <a href="8.html" class="btn" id="openFinal">Open Final Birthday Letter 💌</a>
+    <span class="small" id="enjoyLonger">Enjoy the wishes a bit longer</span>
+  </div>
+</div>
+
+<script>
+  (function(){
+    const flips = Array.from(document.querySelectorAll('.flip'));
+    const total = flips.length;
+    const progressBar = document.getElementById('progressBar');
+    const progressLabel = document.getElementById('progressLabel');
+    const footNote = document.getElementById('footNote');
+    const modal = document.getElementById('modal');
+    const enjoyLonger = document.getElementById('enjoyLonger');
+    const finalLink = document.getElementById('openFinal');
+
+    // state array of booleans (revealed or not)
+    const revealed = new Array(total).fill(false);
+
+    // store last focused element before opening modal (for accessibility)
+    let lastFocusedElement = null;
+
+    // helper: update progress
+    function updateProgress(){
+      const count = revealed.filter(Boolean).length;
+      const pct = Math.round((count/total) * 100);
+      progressBar.style.width = pct + '%';
+
+      if(count === 0){
+        progressLabel.textContent = 'Start discovering your birthday surprises 🎆';
+        footNote.textContent = 'Tap each card to reveal the wishes';
+      } else if(count < total){
+        progressLabel.textContent = `Revealed ${count} of ${total} wishes`;
+        footNote.textContent = 'Keep going — more wishes waiting!';
+      } else {
+        progressLabel.textContent = 'Amazing! All birthday wishes revealed! 🎂';
+        footNote.textContent = 'All wishes unlocked';
+        // show modal after short delay to let animation finish
+        setTimeout(()=> showModal(), 450);
+      }
+    }
+
+    function showModal(){
+      lastFocusedElement = document.activeElement;
+      modal.style.display = 'flex';
+      // focus primary action
+      finalLink.focus();
+      // set aria-hidden on page content if desired (not added here)
+      document.addEventListener('keydown', onKeyDown);
+    }
+
+    function closeModal(){
+      modal.style.display = 'none';
+      // restore focus
+      try { if(lastFocusedElement) lastFocusedElement.focus(); } catch(e){}
+      document.removeEventListener('keydown', onKeyDown);
+    }
+
+    function onKeyDown(e){
+      if(e.key === 'Escape' || e.key === 'Esc'){
+        closeModal();
+      }
+    }
+
+    // setup each flip card
+    flips.forEach((flipEl, idx) => {
+      const card = flipEl.querySelector('.card');
+
+      // click to flip (front -> back) or the back's flipback button to flip back
+      card.addEventListener('click', (e) => {
+        // If clicked the back's flipback button, ignore here (it is handled separately)
+        const isBackButton = e.target.closest('.flipback');
+        if(isBackButton) return;
+
+        // toggle only forward flip; if already flipped, do nothing here
+        if(!card.classList.contains('flipped')){
+          card.classList.add('flipped');
+          revealIndex(idx);
+        }
+      });
+
+      // keyboard accessibility: Enter / Space toggles flip
+      card.addEventListener('keydown', (e) => {
+        if(e.key === 'Enter' || e.key === ' '){
+          e.preventDefault();
+          card.click();
+        }
+      });
+
+      // back button to flip back
+      const backBtn = flipEl.querySelector('.flipback');
+      backBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        card.classList.remove('flipped');
+        // mark as not revealed (optional: keep as revealed even if flipped back — adjust as desired)
+        revealed[idx] = false;
+        updateProgress();
+      });
+    });
+
+    function revealIndex(i){
+      revealed[i] = true;
+      updateProgress();
+    }
+
+    // clicking the "Enjoy the wishes a bit longer" text closes the modal so user can continue
+    enjoyLonger.addEventListener('click', (e) => {
+      e.preventDefault();
+      closeModal();
+    });
+
+    // allow clicking outside modal content (on backdrop) to close
+    modal.addEventListener('click', (e) => {
+      if(e.target === modal){
+        closeModal();
+      }
+    });
+
+    // final link still navigates — keep it
+    finalLink.addEventListener('click', () => {
+      // modal will close naturally on navigation, but remove listeners just in case
+      document.removeEventListener('keydown', onKeyDown);
+    });
+
+    // initial update
+    updateProgress();
+  })();
+</script>
+</body>
+</html>

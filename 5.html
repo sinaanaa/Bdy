@@ -1,0 +1,984 @@
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>It's Cake Time! 🎂</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(180deg, #ffeef8, #fff2e4);
+    }
+
+    .container {
+      max-width: 430px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      color: #f03b8f;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: #7b6a8c;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: #fff7de;
+      border-radius: 26px;
+      padding: 22px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.16);
+    }
+
+    .instruction {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .helper {
+      font-size: .95rem;
+      color: #7b6a8c;
+      margin-bottom: 16px;
+      min-height: 40px;
+    }
+
+    /* Cake area */
+    .cake-area {
+      position: relative;
+      margin: 0 auto 16px;
+      width: 260px;
+      height: 190px;
+    }
+
+    .cake {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 140px;
+      background: transparent;
+    }
+
+    .cake-inner {
+      position: absolute;
+      inset: 0;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.25));
+    }
+
+    /* Realistic cake halves */
+    .cake-half {
+      position: absolute;
+      bottom: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(#e8b685 0%, #d6935a 50%, #c0743f 100%);
+      overflow: hidden;
+      transition: transform 0.7s ease;
+    }
+
+    .cake-half.left {
+      left: 0;
+      border-radius: 20px 0 28px 28px;
+    }
+
+    .cake-half.right {
+      right: 0;
+      border-radius: 0 20px 28px 28px;
+    }
+
+    /* Icing on each half */
+    .cake-half::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 55px;
+      background:
+        radial-gradient(circle at 10% 120%, #ffb0d6 0 18px, transparent 19px),
+        radial-gradient(circle at 50% 120%, #ffb0d6 0 18px, transparent 19px),
+        radial-gradient(circle at 90% 120%, #ffb0d6 0 18px, transparent 19px),
+        linear-gradient(#ffe4f4, #ffc6e5);
+      border-radius: 18px 18px 16px 16px;
+      box-shadow: 0 6px 0 rgba(255,150,207,.55) inset;
+    }
+
+    /* Sprinkles */
+    .sprinkle {
+      position: absolute;
+      width: 4px;
+      height: 10px;
+      border-radius: 999px;
+      background: #ff4d6d;
+      transform: rotate(-18deg);
+      opacity: .9;
+    }
+
+    .sprinkle.s1 { top: 14px; left: 32%; background:#ff4d6d; }
+    .sprinkle.s2 { top: 18px; left: 44%; background:#7b6aee; }
+    .sprinkle.s3 { top: 12px; left: 58%; background:#ffd54f; }
+    .sprinkle.s4 { top: 20px; left: 70%; background:#4dd0e1; }
+    .sprinkle.s5 { top: 16px; left: 22%; background:#ff9800; }
+
+    /* Top ellipse to look more 3D */
+    .cake-top {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 110px;
+      width: 86%;
+      height: 36px;
+      background: radial-gradient(ellipse at center, #ffe5f3 0%, #ffc1de 75%);
+      border-radius: 50% 50% 35% 35%;
+      box-shadow: 0 6px 10px rgba(0,0,0,.15);
+      z-index: -1;
+    }
+
+    /* When cut is complete, halves move apart */
+    .cake.cut-done .cake-half.left {
+      transform: translateX(-22px) rotate(-2deg);
+    }
+
+    .cake.cut-done .cake-half.right {
+      transform: translateX(22px) rotate(2deg);
+    }
+
+    /* Candle */
+    .candle {
+      position: absolute;
+      top: -38px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 42px;
+      background: repeating-linear-gradient(
+        45deg,
+        #ff4d6d 0 6px,
+        #ffe0f0 6px 12px
+      );
+      border-radius: 8px;
+      box-shadow: 0 0 4px rgba(0,0,0,.2);
+      cursor: pointer;
+    }
+
+    /* little attention animation to show interactiveness */
+    .candle.pulse {
+      animation: pulseCandle 1.6s infinite;
+    }
+    @keyframes pulseCandle {
+      0% { transform: translateX(-50%) translateY(0) scale(1); }
+      50% { transform: translateX(-50%) translateY(-2px) scale(1.02); }
+      100% { transform: translateX(-50%) translateY(0) scale(1); }
+    }
+
+    .flame {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 22px;
+      background: radial-gradient(circle at 30% 30%, #fff9c4 0, #ffeb3b 40%, #ff9800 100%);
+      border-radius: 50%;
+      animation: flicker .8s infinite;
+      transform-origin: 50% 100%;
+    }
+
+    @keyframes flicker {
+      0%   { transform: translateX(-50%) scale(1);   }
+      50%  { transform: translateX(-50%) scale(.9); }
+      100% { transform: translateX(-50%) scale(1);   }
+    }
+
+    /* Flame blown out */
+    .flame.blown {
+      animation: none;
+      transition: opacity .35s ease, transform .35s ease;
+      opacity: 0;
+      transform: translateX(-50%) translateY(-12px) scale(0.3);
+    }
+
+    /* Smoke */
+    .smoke {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(200,200,200,.8);
+      transform: translateX(-50%) translateY(0);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .smoke.show {
+      animation: smokeUp 0.8s ease-out forwards;
+    }
+
+    @keyframes smokeUp {
+      0% {
+        opacity: 0.9;
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-22px) scale(1.4);
+      }
+    }
+
+    /* Cut line overlay */
+    .cut-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 72px;
+      height: 3px;
+      pointer-events: none;
+    }
+
+    .cut-line-inner {
+      width: 0;
+      height: 3px;
+      background: #ff4d6d;
+      box-shadow: 0 0 6px rgba(255,77,109,.7);
+      transition: width .05s linear;
+    }
+
+    /* Slider */
+    .slider-wrap {
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .slider-label {
+      display: inline-block;
+      font-size: .85rem;
+      color: #f03b8f;
+      margin-bottom: 4px;
+      padding: 4px 10px;
+      background: #ffffff;
+      border-radius: 999px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.12);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin-top: 8px;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      border-radius: 999px;
+      background: #ffe0f0;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f03b8f;
+      box-shadow: 0 6px 14px rgba(240,59,143,.4);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f03b8f;
+      box-shadow: 0 6px 14px rgba(240,59,143,.4);
+      cursor: pointer;
+      border: none;
+    }
+
+    .next {
+      display: none;
+      margin-top: 18px;
+      padding: 12px 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg,#f03b8f,#ff74b8);
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(240,59,143,.45);
+    }
+
+    .next:active {
+      transform: scale(.96);
+      box-shadow: 0 7px 15px rgba(240,59,143,.5);
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 8px;
+      height: 14px;
+      background: #f03b8f;
+      top: -20px;
+      border-radius: 2px;
+      opacity: 0.9;
+      animation: confetti-fall 1.5s linear forwards;
+      z-index: 999;
+    }
+
+    .confetti:nth-child(3n) { background: #ff9800; }
+    .confetti:nth-child(4n) { background: #ffd54f; }
+    .confetti:nth-child(5n) { background: #7b6aee; }
+
+    @keyframes confetti-fall {
+      0%   { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(260deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>It's Cake Time! 🎂</h1>
+  <p class="subtitle">Make your birthday wish come true!</p>
+
+  <div class="card">
+    <p class="instruction">Cut your birthday cake, birthday boy!</p>
+    <p class="helper" id="helper">
+      Blow the candle first, then cut the cake 🎈
+    </p>
+
+    <div class="cake-area">
+      <div class="cake" id="cake">
+        <div class="cake-top"></div>
+
+        <div class="cake-inner">
+          <div class="cake-half left">
+            <span class="sprinkle s1"></span>
+            <span class="sprinkle s2"></span>
+          </div>
+          <div class="cake-half right">
+            <span class="sprinkle s3"></span>
+            <span class="sprinkle s4"></span>
+            <span class="sprinkle s5"></span>
+          </div>
+        </div>
+
+        <div class="candle pulse" id="candle" title="Click to blow">
+          <div class="flame" id="flame"></div>
+          <div class="smoke" id="smoke"></div>
+        </div>
+      </div>
+
+      <div class="cut-line">
+        <div class="cut-line-inner" id="cutLine"></div>
+      </div>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-label" id="sliderLabel">Drag here to cut ✂️</div>
+      <!-- slider disabled until candle is blown -->
+      <!-- <input type="range" id="cutSlider" min="0" max="100" value="0" disabled>
+    </div>
+
+    <button class="next" id="nextBtn">Continue 🎉</button>
+  </div>
+</div>
+
+<script>
+  const slider    = document.getElementById("cutSlider");
+  const cutLine   = document.getElementById("cutLine");
+  const helper    = document.getElementById("helper");
+  const label     = document.getElementById("sliderLabel");
+  const nextBtn   = document.getElementById("nextBtn");
+  const cake      = document.getElementById("cake");
+
+  const candle    = document.getElementById("candle");
+  const flame     = document.getElementById("flame");
+  const smoke     = document.getElementById("smoke");
+
+  let candleReady = true; // user can always try to interact with candle
+  let candleBlown = false;
+
+  function launchConfetti() {
+    const pieces = 80;
+    for (let i = 0; i < pieces; i++) {
+      const c = document.createElement("span");
+      c.classList.add("confetti");
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.animationDelay = (Math.random() * 0.8) + "s";
+      document.body.appendChild(c);
+
+      setTimeout(() => c.remove(), 2200);
+    }
+  }
+
+  function blowCandle() {
+    if (!candleReady || candleBlown) return;
+    candleBlown = true;
+
+    // stop pulse so user knows it's done
+    candle.classList.remove("pulse");
+
+    // Blow flame
+    flame.classList.add("blown");
+
+    // Show smoke puff
+    smoke.classList.remove("show");
+    void smoke.offsetWidth; // restart animation trick
+    smoke.classList.add("show");
+
+    helper.textContent = "Whooo! You blew out the candle. Now cut the cake ✂️";
+    label.textContent = "Slide to cut the cake";
+
+    // enable the slider now that candle is blown
+    slider.disabled = false;
+    slider.focus();
+  }
+
+  // prevent the slider from being interactable until candleBlown (double-safety)
+  slider.addEventListener("input", () => {
+    if (!candleBlown) {
+      // keep it visually at 0 and give a gentle hint
+      cutLine.style.width = "0%";
+      helper.textContent = "Blow the candle first! 🕯️💨";
+      return;
+    }
+
+    cutLine.style.width = slider.value + "%";
+
+    if (Number(slider.value) >= 95) {
+      slider.value = 100;
+      cutLine.style.width = "100%";
+
+      cake.classList.add("cut-done");
+      slider.disabled = true;
+      nextBtn.style.display = "inline-block";
+
+      label.textContent = "Perfect slice! 🍰";
+      helper.textContent = "Yay! You cut the cake 🎉";
+      launchConfetti();
+    }
+  });
+
+  // allow keyboard Enter/Space on candle too
+  candle.addEventListener("click", blowCandle);
+  candle.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") blowCandle();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    // go to your final page
+    window.location.href = "6.html"; // change to your actual next page
+  });
+
+  // accessibility: make candle focusable
+  candle.setAttribute("tabindex", "0");
+</script>
+
+</body>
+</html> --> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>It's Cake Time! 🎂</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(180deg, #ffeef8, #fff2e4);
+    }
+
+    .container {
+      max-width: 430px;
+      width: 100%;
+      text-align: center;
+    }
+
+    h1 {
+      color: #f03b8f;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      color: #7b6a8c;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: #fff7de;
+      border-radius: 26px;
+      padding: 22px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.16);
+    }
+
+    .instruction {
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .helper {
+      font-size: .95rem;
+      color: #7b6a8c;
+      margin-bottom: 16px;
+      min-height: 40px;
+    }
+
+    /* Cake area */
+    .cake-area {
+      position: relative;
+      margin: 0 auto 16px;
+      width: 260px;
+      height: 190px;
+    }
+
+    .cake {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 140px;
+      background: transparent;
+    }
+
+    .cake-inner {
+      position: absolute;
+      inset: 0;
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.25));
+    }
+
+    /* Realistic cake halves */
+    .cake-half {
+      position: absolute;
+      bottom: 0;
+      width: 50%;
+      height: 100%;
+      background: linear-gradient(#e8b685 0%, #d6935a 50%, #c0743f 100%);
+      overflow: hidden;
+      transition: transform 0.7s ease;
+    }
+
+    .cake-half.left {
+      left: 0;
+      border-radius: 20px 0 28px 28px;
+    }
+
+    .cake-half.right {
+      right: 0;
+      border-radius: 0 20px 28px 28px;
+    }
+
+    /* Icing on each half */
+    .cake-half::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      width: 100%;
+      height: 55px;
+      background:
+        radial-gradient(circle at 10% 120%, #ffb0d6 0 18px, transparent 19px),
+        radial-gradient(circle at 50% 120%, #ffb0d6 0 18px, transparent 19px),
+        radial-gradient(circle at 90% 120%, #ffb0d6 0 18px, transparent 19px),
+        linear-gradient(#ffe4f4, #ffc6e5);
+      border-radius: 18px 18px 16px 16px;
+      box-shadow: 0 6px 0 rgba(255,150,207,.55) inset;
+    }
+
+    /* Sprinkles */
+    .sprinkle {
+      position: absolute;
+      width: 4px;
+      height: 10px;
+      border-radius: 999px;
+      background: #ff4d6d;
+      transform: rotate(-18deg);
+      opacity: .9;
+    }
+
+    .sprinkle.s1 { top: 14px; left: 32%; background:#ff4d6d; }
+    .sprinkle.s2 { top: 18px; left: 44%; background:#7b6aee; }
+    .sprinkle.s3 { top: 12px; left: 58%; background:#ffd54f; }
+    .sprinkle.s4 { top: 20px; left: 70%; background:#4dd0e1; }
+    .sprinkle.s5 { top: 16px; left: 22%; background:#ff9800; }
+
+    /* Top ellipse to look more 3D */
+    .cake-top {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      bottom: 110px;
+      width: 86%;
+      height: 36px;
+      background: radial-gradient(ellipse at center, #ffe5f3 0%, #ffc1de 75%);
+      border-radius: 50% 50% 35% 35%;
+      box-shadow: 0 6px 10px rgba(0,0,0,.15);
+      z-index: -1;
+    }
+
+    /* When cut is complete, halves move apart */
+    .cake.cut-done .cake-half.left {
+      transform: translateX(-22px) rotate(-2deg);
+    }
+
+    .cake.cut-done .cake-half.right {
+      transform: translateX(22px) rotate(2deg);
+    }
+
+    /* Candle */
+    .candle {
+      position: absolute;
+      top: -38px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 16px;
+      height: 42px;
+      background: repeating-linear-gradient(
+        45deg,
+        #ff4d6d 0 6px,
+        #ffe0f0 6px 12px
+      );
+      border-radius: 8px;
+      box-shadow: 0 0 4px rgba(0,0,0,.2);
+      cursor: pointer;
+    }
+
+    /* little attention animation to show interactiveness */
+    .candle.pulse {
+      animation: pulseCandle 1.6s infinite;
+    }
+    @keyframes pulseCandle {
+      0% { transform: translateX(-50%) translateY(0) scale(1); }
+      50% { transform: translateX(-50%) translateY(-2px) scale(1.02); }
+      100% { transform: translateX(-50%) translateY(0) scale(1); }
+    }
+
+    .flame {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 14px;
+      height: 22px;
+      background: radial-gradient(circle at 30% 30%, #fff9c4 0, #ffeb3b 40%, #ff9800 100%);
+      border-radius: 50%;
+      animation: flicker .8s infinite;
+      transform-origin: 50% 100%;
+    }
+
+    @keyframes flicker {
+      0%   { transform: translateX(-50%) scale(1);   }
+      50%  { transform: translateX(-50%) scale(.9); }
+      100% { transform: translateX(-50%) scale(1);   }
+    }
+
+    /* Flame blown out */
+    .flame.blown {
+      animation: none;
+      transition: opacity .35s ease, transform .35s ease;
+      opacity: 0;
+      transform: translateX(-50%) translateY(-12px) scale(0.3);
+    }
+
+    /* Smoke */
+    .smoke {
+      position: absolute;
+      top: -16px;
+      left: 50%;
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: rgba(200,200,200,.8);
+      transform: translateX(-50%) translateY(0);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .smoke.show {
+      animation: smokeUp 0.8s ease-out forwards;
+    }
+
+    @keyframes smokeUp {
+      0% {
+        opacity: 0.9;
+        transform: translateX(-50%) translateY(0) scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-22px) scale(1.4);
+      }
+    }
+
+    /* Cut line overlay */
+    .cut-line {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 72px;
+      height: 3px;
+      pointer-events: none;
+    }
+
+    .cut-line-inner {
+      width: 0;
+      height: 3px;
+      background: #ff4d6d;
+      box-shadow: 0 0 6px rgba(255,77,109,.7);
+      transition: width .05s linear;
+    }
+
+    /* Slider */
+    .slider-wrap {
+      margin-top: 8px;
+      text-align: center;
+    }
+
+    .slider-label {
+      display: inline-block;
+      font-size: .85rem;
+      color: #f03b8f;
+      margin-bottom: 4px;
+      padding: 4px 10px;
+      background: #ffffff;
+      border-radius: 999px;
+      box-shadow: 0 6px 14px rgba(0,0,0,.12);
+    }
+
+    input[type="range"] {
+      width: 100%;
+      margin-top: 8px;
+      -webkit-appearance: none;
+      appearance: none;
+      height: 8px;
+      border-radius: 999px;
+      background: #ffe0f0;
+      outline: none;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f03b8f;
+      box-shadow: 0 6px 14px rgba(240,59,143,.4);
+      cursor: pointer;
+    }
+
+    input[type="range"]::-moz-range-thumb {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      background: #f03b8f;
+      box-shadow: 0 6px 14px rgba(240,59,143,.4);
+      cursor: pointer;
+      border: none;
+    }
+
+    .next {
+      display: none;
+      margin-top: 18px;
+      padding: 12px 30px;
+      border-radius: 999px;
+      background: linear-gradient(135deg,#f03b8f,#ff74b8);
+      color: #fff;
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(240,59,143,.45);
+    }
+
+    .next:active {
+      transform: scale(.96);
+      box-shadow: 0 7px 15px rgba(240,59,143,.5);
+    }
+
+    /* Confetti */
+    .confetti {
+      position: fixed;
+      width: 8px;
+      height: 14px;
+      background: #f03b8f;
+      top: -20px;
+      border-radius: 2px;
+      opacity: 0.9;
+      animation: confetti-fall 1.5s linear forwards;
+      z-index: 999;
+    }
+
+    .confetti:nth-child(3n) { background: #ff9800; }
+    .confetti:nth-child(4n) { background: #ffd54f; }
+    .confetti:nth-child(5n) { background: #7b6aee; }
+
+    @keyframes confetti-fall {
+      0%   { transform: translateY(0) rotate(0deg); }
+      100% { transform: translateY(110vh) rotate(260deg); }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>It's Cake Time! 🎂</h1>
+  <p class="subtitle">Make your birthday wish come true!</p>
+
+  <div class="card">
+    <p class="instruction">Cut your birthday cake, birthday boy!</p>
+    <p class="helper" id="helper">
+      Blow the candle first, then cut the cake 🎈
+    </p>
+
+    <div class="cake-area">
+      <div class="cake" id="cake">
+        <div class="cake-top"></div>
+
+        <div class="cake-inner">
+          <div class="cake-half left">
+            <span class="sprinkle s1"></span>
+            <span class="sprinkle s2"></span>
+          </div>
+          <div class="cake-half right">
+            <span class="sprinkle s3"></span>
+            <span class="sprinkle s4"></span>
+            <span class="sprinkle s5"></span>
+          </div>
+        </div>
+
+        <div class="candle pulse" id="candle" title="Click to blow">
+          <div class="flame" id="flame"></div>
+          <div class="smoke" id="smoke"></div>
+        </div>
+      </div>
+
+      <div class="cut-line">
+        <div class="cut-line-inner" id="cutLine"></div>
+      </div>
+    </div>
+
+    <div class="slider-wrap">
+      <div class="slider-label" id="sliderLabel">Drag here to cut ✂️</div>
+      <!-- slider disabled until candle is blown -->
+      <input type="range" id="cutSlider" min="0" max="100" value="0" disabled>
+    </div>
+
+    <button class="next" id="nextBtn">Continue 🎉</button>
+  </div>
+</div>
+
+<script>
+  const slider    = document.getElementById("cutSlider");
+  const cutLine   = document.getElementById("cutLine");
+  const helper    = document.getElementById("helper");
+  const label     = document.getElementById("sliderLabel");
+  const nextBtn   = document.getElementById("nextBtn");
+  const cake      = document.getElementById("cake");
+
+  const candle    = document.getElementById("candle");
+  const flame     = document.getElementById("flame");
+  const smoke     = document.getElementById("smoke");
+
+  let candleReady = true; // user can always try to interact with candle
+  let candleBlown = false;
+
+  function launchConfetti() {
+    const pieces = 80;
+    for (let i = 0; i < pieces; i++) {
+      const c = document.createElement("span");
+      c.classList.add("confetti");
+      c.style.left = Math.random() * 100 + "vw";
+      c.style.animationDelay = (Math.random() * 0.8) + "s";
+      document.body.appendChild(c);
+
+      setTimeout(() => c.remove(), 2200);
+    }
+  }
+
+  function blowCandle() {
+    if (!candleReady || candleBlown) return;
+    candleBlown = true;
+
+    // stop pulse so user knows it's done
+    candle.classList.remove("pulse");
+
+    // Blow flame
+    flame.classList.add("blown");
+
+    // Show smoke puff
+    smoke.classList.remove("show");
+    void smoke.offsetWidth; // restart animation trick
+    smoke.classList.add("show");
+
+    helper.textContent = "Whooo! You blew out the candle. Now cut the cake ✂️";
+    label.textContent = "Slide to cut the cake";
+
+    // enable the slider now that candle is blown
+    slider.disabled = false;
+    slider.focus();
+  }
+
+  // prevent the slider from being interactable until candleBlown (double-safety)
+  slider.addEventListener("input", () => {
+    if (!candleBlown) {
+      // keep it visually at 0 and give a gentle hint
+      cutLine.style.width = "0%";
+      helper.textContent = "Blow the candle first! 🕯️💨";
+      return;
+    }
+
+    cutLine.style.width = slider.value + "%";
+
+    if (Number(slider.value) >= 95) {
+      slider.value = 100;
+      cutLine.style.width = "100%";
+
+      cake.classList.add("cut-done");
+      slider.disabled = true;
+      nextBtn.style.display = "inline-block";
+
+      label.textContent = "Perfect slice! 🍰";
+      helper.textContent = "Yay! You cut the cake 🎉";
+      launchConfetti();
+    }
+  });
+
+  // allow keyboard Enter/Space on candle too
+  candle.addEventListener("click", blowCandle);
+  candle.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" || e.key === " ") blowCandle();
+  });
+
+  nextBtn.addEventListener("click", () => {
+    // go to your final page
+    window.location.href = "6.html"; // change to your actual next page
+  });
+
+  // accessibility: make candle focusable
+  candle.setAttribute("tabindex", "0");
+</script>
+
+</body>
+</html>

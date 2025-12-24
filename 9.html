@@ -1,0 +1,574 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blow &amp; Settle Kisses — Birthday Magic</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1: #ffe6ee;
+      --bg2: #fff0f6;
+      --card-bg: #fff;
+      --accent: #ff2a7d;
+      --muted: #9f8fa0;
+    }
+
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:"Poppins",sans-serif;
+      background: linear-gradient(180deg,var(--bg1),var(--bg2));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      overflow:hidden;
+      padding:18px;
+    }
+
+    /* card */
+    .card-wrap{
+      position:relative;
+      z-index:10;
+      width:92%;
+      max-width:420px;
+      text-align:center;
+      pointer-events:auto;
+    }
+
+    .card{
+      background:var(--card-bg);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 20px 40px rgba(0,0,0,0.08);
+      position:relative;
+      overflow:visible;
+    }
+
+    .title{color:var(--accent);font-weight:700;font-size:20px;margin-bottom:6px}
+    .sub{color:#b96a87;margin-bottom:18px;font-size:13px}
+    .message{color:var(--accent);font-weight:600;margin:6px 0 14px;font-size:16px}
+    .date{color:var(--muted);font-size:13px;margin-bottom:14px}
+
+    /* little mouth icon (starting point) */
+    .giver{
+      width:64px;height:64px;border-radius:50%;
+      background:linear-gradient(135deg,#ffb3c9,#ff7aa6);
+      display:flex;align-items:center;justify-content:center;
+      font-size:28px;margin:0 auto 10px;
+      box-shadow:0 8px 18px rgba(255,80,140,0.18);
+    }
+
+    .controls{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+    .btn{
+      border:0;padding:10px 12px;border-radius:12px;cursor:pointer;font-weight:600;
+      box-shadow:0 6px 14px rgba(0,0,0,0.08);
+    }
+    .btn-send{background:linear-gradient(135deg,#ff6f91,#ff2a7d);color:#fff}
+    .btn-fast{background:linear-gradient(135deg,#7fe7c9,#3ec290);color:#053b2e}
+    .btn-clear{background:#fff;color:#ff2a7d;border:1px solid rgba(255,42,125,0.12)}
+
+    /* overlay area where kisses will settle */
+    .kiss-stage{
+      position:fixed;
+      inset:0;
+      pointer-events:none; /* allow clicks on card */
+      z-index:5;
+      display:block;
+    }
+
+    /* flying kiss (initial) */
+    .kiss-fly{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%) translateY(0) scale(0.9) rotate(0);
+      top:calc(50% + 60px); /* start near card center visually */
+      font-size:30px;
+      will-change:transform,opacity;
+      opacity:0;
+      pointer-events:none;
+      z-index:20;
+      filter: drop-shadow(0 8px 14px rgba(255,80,140,0.18));
+      animation:flyUp 900ms cubic-bezier(.12,.9,.32,1) forwards;
+    }
+
+    /* final settled kiss (sticker) */
+    .kiss-settled{
+      position:fixed;
+      font-size:18px;
+      transform-origin:center;
+      opacity:0;
+      pointer-events:none;
+      z-index:6;
+      transition: transform 300ms cubic-bezier(.2,.9,.3,1), opacity 220ms ease;
+      animation:tinyWiggle 3s ease-in-out infinite;
+    }
+
+    @keyframes flyUp{
+      0%{opacity:0; transform:translateX(-50%) translateY(0) scale(0.85) rotate(0)}
+      40%{opacity:1; transform:translateX(-50%) translateY(-70px) scale(1.15) rotate(-6deg)}
+      70%{transform:translateX(-50%) translateY(-140px) scale(1) rotate(4deg)}
+      100%{opacity:1; transform:translateX(-50%) translateY(-160px) scale(0.95) rotate(0)}
+    }
+
+    @keyframes tinyWiggle{
+      0%{transform:rotate(-4deg)}
+      25%{transform:rotate(2deg)}
+      50%{transform:rotate(4deg)}
+      75%{transform:rotate(-2deg)}
+      100%{transform:rotate(-4deg)}
+    }
+
+    /* visual hint for settled sticker pop */
+    .pop {
+      transform: scale(1.25) rotate(2deg);
+      opacity:1 !important;
+    }
+
+    /* subtle background glow when active */
+    .bg-glow{
+      position:fixed; inset:0; z-index:2; pointer-events:none;
+      background: radial-gradient(circle at 30% 20%, rgba(255,180,210,0.18), transparent 12%),
+                  radial-gradient(circle at 80% 70%, rgba(255,220,240,0.14), transparent 12%);
+      opacity:0; transition:opacity 360ms ease;
+    }
+    .bg-glow.active{opacity:1}
+
+    /* footer small text */
+    .hint{font-size:12px;color:var(--muted);margin-top:8px}
+  </style>
+</head>
+<body>
+
+  <div class="kiss-stage" id="kissStage"></div>
+  <div class="bg-glow" id="bgGlow"></div>
+
+  <div class="card-wrap" aria-hidden="false">
+    <div class="card" role="region" aria-label="Birthday card">
+      <div class="giver" id="giver">😘</div>
+      <div class="title">Final Birthday Letter</div>
+      <div class="sub">Sealed with love — ready to share kisses</div>
+      <div class="message">Forever Yours — Happy Birthday! 🎂💕</div>
+      <div class="date">Friday, December 26, 2025</div>
+
+      <div class="controls" style="margin-top:12px">
+        <button class="btn btn-send" id="sendBtn">Send Kisses 💋</button>
+        <button class="btn btn-fast" id="fastBtn">Fast Mode ⚡</button>
+        <button class="btn btn-clear" id="clearBtn">Clear ✨</button>
+      </div>
+
+      <div class="hint">Kisses will float up, then stick as tiny stickers — press Clear to reset.</div>
+    </div>
+  </div>
+
+  <script>
+    // Blow & Settle kisses
+    (function(){
+      const sendBtn = document.getElementById('sendBtn');
+      const fastBtn = document.getElementById('fastBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const stage = document.getElementById('kissStage');
+      const giver = document.getElementById('giver');
+      const bgGlow = document.getElementById('bgGlow');
+
+      let running = false;
+      let fast = false;
+      let total = 90; // default number of kisses
+      let created = 0;
+      let intervalId = null;
+
+      // utility random
+      const rand = (min,max) => Math.random()*(max-min)+min;
+
+      function startBlow(){
+        if(running) return;
+        running = true;
+        created = 0;
+        bgGlow.classList.add('active');
+
+        const pace = fast ? 28 : 90; // ms between blows
+        const count = fast ? total*1.5 : total;
+
+        intervalId = setInterval(() => {
+          blowOne();
+          created++;
+          if(created >= count){
+            stopBlow();
+          }
+        }, pace);
+      }
+
+      function stopBlow(){
+        running = false;
+        bgGlow.classList.remove('active');
+        if(intervalId) clearInterval(intervalId);
+        intervalId = null;
+      }
+
+      function blowOne(){
+        // create flying kiss at giver position
+        const fly = document.createElement('div');
+        fly.className = 'kiss-fly';
+        fly.textContent = '💋';
+
+        // place start coordinates near giver element center
+        const giverRect = giver.getBoundingClientRect();
+        const startX = giverRect.left + giverRect.width/2;
+        const startY = giverRect.top + giverRect.height/2;
+
+        fly.style.left = startX + 'px';
+        fly.style.top = startY + 'px';
+
+        // randomize size and slight rotation
+        const size = Math.round(rand(22, 46));
+        fly.style.fontSize = size + 'px';
+        fly.style.transform = `translateX(-50%) translateY(0) rotate(${rand(-18,18)}deg)`;
+
+        document.body.appendChild(fly);
+
+        // after the fly animation finishes (~900ms), we "settle" the kiss
+        fly.addEventListener('animationend', () => {
+          // compute final settle position
+          const vw = window.innerWidth;
+          const vh = window.innerHeight;
+          const margin = 14;
+
+          // Try to settle in the upper half or around center
+          const settleX = rand(margin, vw - margin);
+          const settleY = rand(48, vh - 80); // leave bottom area free
+
+          // create settled node
+          const s = document.createElement('div');
+          s.className = 'kiss-settled';
+          s.textContent = '💋';
+
+          // smaller when settled
+          const settledSize = Math.round(rand(12, 22));
+          s.style.fontSize = settledSize + 'px';
+
+          s.style.left = settleX + 'px';
+          s.style.top = settleY + 'px';
+
+          // slight random rotation
+          s.style.transform = `rotate(${rand(-20,20)}deg) scale(0.8)`;
+          s.style.opacity = '0';
+
+          stage.appendChild(s);
+
+          // pop in
+          requestAnimationFrame(() => {
+            s.classList.add('pop'); // pop will scale to ~1.25
+            // after a tick, remove pop class to settle to natural size and keep a subtle wiggle
+            setTimeout(() => {
+              s.classList.remove('pop');
+              s.style.opacity = '1';
+            }, 180 + rand(0,120));
+          });
+
+          // Remove flying element
+          fly.remove();
+
+          // optional tiny flourish: a faint heart briefly near the giver
+          tinyHeartAtGiver();
+        });
+
+        // safety remove in case anything fails
+        setTimeout(()=> fly.remove(), 2000);
+      }
+
+      function tinyHeartAtGiver(){
+        const h = document.createElement('div');
+        h.textContent = '❤';
+        h.style.position = 'fixed';
+        h.style.left = (giver.getBoundingClientRect().left + giver.clientWidth/2) + 'px';
+        h.style.top = (giver.getBoundingClientRect().top + 6) + 'px';
+        h.style.transform = 'translateX(-50%) translateY(0) scale(0.6)';
+        h.style.fontSize = '18px';
+        h.style.opacity = '0.95';
+        h.style.color = '#ff6f91';
+        h.style.zIndex = 19;
+        h.style.pointerEvents = 'none';
+        h.style.transition = 'transform 520ms cubic-bezier(.16,.8,.24,1), opacity 520ms ease';
+        document.body.appendChild(h);
+        requestAnimationFrame(()=> {
+          h.style.transform = 'translateX(-50%) translateY(-40px) scale(1.08)';
+          h.style.opacity = '0';
+        });
+        setTimeout(()=> h.remove(),620);
+      }
+
+      function clearKisses(){
+        // remove all settled kisses
+        const nodes = stage.querySelectorAll('.kiss-settled');
+        nodes.forEach(n => n.remove());
+        // also remove any flying ones
+        document.querySelectorAll('.kiss-fly').forEach(n => n.remove());
+        stopBlow();
+      }
+
+      // wire buttons
+      sendBtn.addEventListener('click', startBlow);
+      fastBtn.addEventListener('click', () => {
+        fast = !fast;
+        fastBtn.textContent = fast ? 'Fast: ON ⚡' : 'Fast Mode ⚡';
+        fastBtn.style.boxShadow = fast ? '0 8px 18px rgba(62,194,144,0.18)' : '';
+      });
+      clearBtn.addEventListener('click', clearKisses);
+
+      // keyboard: space to send / c to clear
+      window.addEventListener('keydown', (e)=>{
+        if(e.code === 'Space') { e.preventDefault(); startBlow(); }
+        if(e.key.toLowerCase() === 'c') clearKisses();
+      });
+
+      // responsive: on resize we do nothing special; settled positions stay absolute.
+    })();
+  </script>
+</body>
+</html> -->
+
+
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Blow &amp; Settle Kisses — Variant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&family=Dancing+Script:wght@500&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg1:#fff6fb; --bg2:#fff0f6; --card:#fff; --accent:#ff2a7d; --accent-2:#ff76a9; --muted:#9b8699;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html,body{height:100%}
+    body{
+      font-family:'Poppins',system-ui,Arial; background:radial-gradient(700px 300px at 10% 10%, rgba(255,200,220,0.16), transparent), linear-gradient(180deg,var(--bg1),var(--bg2));
+      display:flex;align-items:center;justify-content:center;padding:20px;overflow:hidden;color:#4b3b4b
+    }
+
+    .stage-wrap{width:min(920px,96%);display:grid;grid-template-columns:1fr 320px;gap:22px;align-items:start}
+    @media (max-width:880px){.stage-wrap{grid-template-columns:1fr}}
+
+    .play-area{position:relative;min-height:420px;border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,0.85),rgba(255,250,253,0.9));box-shadow:0 26px 60px rgba(174,71,113,0.08);overflow:hidden;padding:28px}
+
+    /* floating clouds / bokeh */
+    .bokeh{position:absolute;inset:0;pointer-events:none}
+    .bokeh .dot{position:absolute;border-radius:50%;opacity:.08;filter:blur(10px)}
+
+    /* giver area */
+    .giver-wrap{display:flex;align-items:center;gap:14px}
+    .giver{width:78px;height:78px;border-radius:18px;background:linear-gradient(135deg,#ffd9e6,#ffb6d1);display:flex;align-items:center;justify-content:center;font-size:34px;box-shadow:0 18px 40px rgba(255,95,150,0.12);cursor:pointer}
+    .card-title{font-weight:700;color:var(--accent);font-size:20px}
+    .meta{color:var(--muted);font-size:13px}
+
+    /* settled board: a semi-transparent keep area */
+    .canvas{position:relative;height:290px;margin-top:18px;border-radius:12px;border:1px dashed rgba(155,81,112,0.06);overflow:hidden}
+
+    /* flying kiss */
+    .kiss-fly{position:absolute;font-size:28px;will-change:transform,opacity;pointer-events:none;z-index:40;filter:drop-shadow(0 8px 18px rgba(255,80,140,0.18));opacity:0}
+    .kiss-fly.small{font-size:18px}
+    .kiss-fly.large{font-size:44px}
+
+    /* settled*/
+    .kiss-settled{position:absolute;font-size:18px;pointer-events:none;transform-origin:center;transition:transform .28s cubic-bezier(.16,.9,.24,1),opacity .22s ease;opacity:0}
+    .kiss-settled.pop{transform:scale(1.18);opacity:1}
+
+    /* sidebar */
+    .controls{background:linear-gradient(180deg,#fff,#fffefc);border-radius:14px;padding:18px;box-shadow:0 16px 36px rgba(144,63,112,0.06)}
+    .controls .row{display:flex;gap:8px;margin-bottom:12px}
+    .btn{flex:1;padding:10px 12px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    .btn-primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#fff}
+    .btn-ghost{background:transparent;border:1px solid rgba(155,81,112,0.08);color:var(--accent)}
+    .small{font-size:12px;color:var(--muted);text-align:center}
+
+    /* gentle floating animation for settled stickers */
+    @keyframes floaty{0%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}100%{transform:translateY(0) rotate(-3deg)}}
+
+    .kiss-settled.float{animation:floaty 4s ease-in-out infinite}
+
+    /* nice micro-interactions */
+    .giver:active{transform:scale(.98)}
+
+  </style>
+</head>
+<body>
+
+  <div class="stage-wrap">
+
+    <main class="play-area" aria-live="polite">
+      <div class="bokeh" aria-hidden="true">
+        <div class="dot" style="width:220px;height:220px;left:6%;top:8%;background:#ffddee"></div>
+        <div class="dot" style="width:140px;height:140px;left:78%;top:10%;background:#fff1f7"></div>
+        <div class="dot" style="width:100px;height:100px;left:48%;top:72%;background:#ffeef8"></div>
+      </div>
+
+      <div class="giver-wrap">
+        <div class="giver" id="giver">😘</div>
+        <div>
+          <div class="card-title">Blow &amp; Settle Kisses</div>
+          <div class="meta">Sealed with love — ready to share kisses</div>
+          <div class="meta">Tap the face or press Space — kiss storm will settle as cute stickers</div>
+        </div>
+      </div>
+
+      <div class="canvas" id="canvas" aria-hidden="false"></div>
+    </main>
+
+    <aside class="controls" role="region" aria-label="Controls">
+      <div class="row">
+        <button class="btn btn-primary" id="sendBtn">Send Kisses</button>
+        <button class="btn btn-ghost" id="burstBtn">Burst</button>
+      </div>
+
+      <div class="row">
+        <button class="btn" id="modeBtn">Mode: Calm</button>
+        <button class="btn" id="clearBtn">Clear</button>
+      </div>
+
+      <div class="row">
+        <label style="flex:1" class="small">Intensity</label>
+        <input id="intensity" type="range" min="10" max="180" value="80" style="flex:1">
+      </div>
+
+      <div style="height:8px"></div>
+      <div class="small">Notes: settled kisses avoid overlapping by simple collision nudging — works well on mobile. Press 'B' for Burst.</div>
+    </aside>
+
+  </div>
+
+  <script>
+    (function(){
+      const giver = document.getElementById('giver');
+      const sendBtn = document.getElementById('sendBtn');
+      const burstBtn = document.getElementById('burstBtn');
+      const clearBtn = document.getElementById('clearBtn');
+      const modeBtn = document.getElementById('modeBtn');
+      const intensity = document.getElementById('intensity');
+      const canvas = document.getElementById('canvas');
+
+      let running = false; let mode = 'calm'; let interval = null; let nodes = [];
+
+      const rand = (a,b) => Math.random()*(b-a)+a;
+
+      function emitOne(opts={}){
+        const fly = document.createElement('div');
+        fly.className = 'kiss-fly';
+        fly.textContent = opts.char || '💋';
+        const sizeClass = Math.random()>.8 ? 'large' : (Math.random()>.7 ? 'small' : '');
+        if(sizeClass) fly.classList.add(sizeClass);
+
+        // start coords at giver center
+        const g = giver.getBoundingClientRect();
+        const startX = g.left + g.width/2 + rand(-8,8);
+        const startY = g.top + g.height/2 + rand(-6,6);
+        fly.style.left = startX + 'px'; fly.style.top = startY + 'px';
+
+        document.body.appendChild(fly);
+
+        // compute target within canvas
+        const cRect = canvas.getBoundingClientRect();
+        // bias upward and spread horizontally
+        let targetX = rand(cRect.left + 16, cRect.right - 16);
+        let targetY = rand(cRect.top + 12, cRect.bottom - 12);
+        // Mode biases
+        if(mode === 'calm') targetY = rand(cRect.top + 12, cRect.top + cRect.height*0.55);
+        if(mode === 'romantic') targetX = (cRect.left + cRect.right)/2 + rand(-cRect.width*0.18, cRect.width*0.18);
+
+        // animate using JS transforms (easier cross-browser)
+        const dx = targetX - startX; const dy = targetY - startY;
+        const duration = rand(680, 1200) * (mode === 'calm' ? 1.0 : 0.7);
+        fly.style.transition = `transform ${duration}ms cubic-bezier(.18,.9,.28,1), opacity ${duration/2}ms ease`;
+        requestAnimationFrame(()=>{
+          fly.style.opacity = '1';
+          fly.style.transform = `translate(${dx}px, ${dy}px) rotate(${rand(-20,20)}deg) scale(${rand(.9,1.05)})`;
+        });
+
+        // settle after animation
+        setTimeout(()=>{
+          fly.remove();
+          const settled = document.createElement('div');
+          settled.className = 'kiss-settled float';
+          settled.textContent = '💋';
+          // small random size
+          settled.style.fontSize = (Math.round(rand(12,26))) + 'px';
+          // place inside canvas bounds
+          const localX = targetX - cRect.left; const localY = targetY - cRect.top;
+          settled.style.left = (localX) + 'px'; settled.style.top = (localY) + 'px';
+
+          // nudge to avoid collision
+          nudgeIntoPlace(settled);
+
+          canvas.appendChild(settled);
+          setTimeout(()=>settled.classList.add('pop'),20);
+          nodes.push(settled);
+
+        }, duration + 40);
+
+        // safety cleanup
+        setTimeout(()=>fly.remove(), duration + 800);
+      }
+
+      function nudgeIntoPlace(el){
+        const rect = el.getBoundingClientRect();
+        const cRect = canvas.getBoundingClientRect();
+        // check overlap with existing nodes (simple bounding-box check)
+        const padding = 6;
+        for(let i=0;i<nodes.length;i++){
+          const o = nodes[i].getBoundingClientRect();
+          const overlapX = Math.max(0, Math.min(rect.right, o.right) - Math.max(rect.left, o.left));
+          const overlapY = Math.max(0, Math.min(rect.bottom, o.bottom) - Math.max(rect.top, o.top));
+          if(overlapX > padding && overlapY > padding){
+            // nudge new element randomly away
+            const nx = parseFloat(el.style.left) + rand(-34,34);
+            const ny = parseFloat(el.style.top) + rand(-28,28);
+            el.style.left = Math.min(Math.max(8, nx), cRect.width-16) + 'px';
+            el.style.top = Math.min(Math.max(8, ny), cRect.height-16) + 'px';
+          }
+        }
+      }
+
+      function start(rate=80){
+        if(running) return; running = true;
+        const step = parseInt(intensity.value,10);
+        interval = setInterval(()=> emitOne(), Math.max(12, rate * (120/step)));
+      }
+      function stop(){ running=false; clearInterval(interval); interval=null; }
+
+      // controls
+      sendBtn.addEventListener('click', ()=> start(80));
+      burstBtn.addEventListener('click', ()=>{ for(let i=0;i<28;i++) setTimeout(()=>emitOne(), i*24) });
+      clearBtn.addEventListener('click', ()=>{
+        nodes.forEach(n=>n.remove()); nodes = [];
+        stop();
+      });
+
+      giver.addEventListener('click', ()=> start(parseInt(intensity.value,10)) );
+      modeBtn.addEventListener('click', ()=>{
+        mode = mode === 'calm' ? 'romantic' : 'calm';
+        modeBtn.textContent = 'Mode: ' + (mode === 'calm' ? 'Calm' : 'Romantic');
+      });
+
+      // keyboard
+      window.addEventListener('keydown',(e)=>{
+        if(e.code === 'Space'){ e.preventDefault(); start(80); }
+        if(e.key.toLowerCase() === 'b') burstBtn.click();
+        if(e.key.toLowerCase() === 'c') clearBtn.click();
+      });
+
+      // simple pointer tap to send single kiss
+      canvas.addEventListener('click', (ev)=>{
+        // place a kiss where clicked
+        const rect = canvas.getBoundingClientRect();
+        const el = document.createElement('div'); el.className='kiss-settled pop float'; el.textContent='💋'; el.style.fontSize='18px';
+        el.style.left = (ev.clientX - rect.left) + 'px'; el.style.top = (ev.clientY - rect.top) + 'px';
+        nudgeIntoPlace(el); canvas.appendChild(el); nodes.push(el);
+        setTimeout(()=>el.classList.remove('pop'), 250);
+      });
+
+    })();
+  </script>
+</body>
+</html>

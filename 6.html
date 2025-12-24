@@ -1,0 +1,377 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Play Our Moments & Memories</title>
+
+<style>
+:root{
+  --pink:#f03b8f;
+  --soft:#fff7de;
+  --muted:#7b6a8c;
+  --max-width:980px;
+}
+
+*{
+  box-sizing:border-box;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  margin:0;
+  padding:0;
+}
+
+html,body{height:100%}
+
+body{
+  min-height:100vh;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:18px;
+  background:linear-gradient(180deg,#fff0f7,#fff7ee);
+}
+
+.page{
+  width:100%;
+  max-width:var(--max-width);
+}
+
+h1{
+  color:var(--pink);
+  font-size:1.5rem;
+  text-align:center;
+  margin-bottom:6px;
+}
+
+.lead{
+  color:var(--muted);
+  text-align:center;
+  margin-bottom:14px;
+}
+
+.card{
+  background:var(--soft);
+  border-radius:16px;
+  padding:16px;
+  box-shadow:0 18px 40px rgba(0,0,0,.12);
+}
+
+.media-area{
+  display:grid;
+  grid-template-columns:1fr 300px;
+  gap:14px;
+}
+
+/* ================= STAGE ================= */
+
+.stage-wrap{
+  background:#fff;
+  border-radius:12px;
+  padding:10px;
+  box-shadow:0 10px 28px rgba(0,0,0,.10);
+}
+
+.stage{
+  width:100%;
+  max-height:70vh;          /* KEY FIX */
+  aspect-ratio:16 / 9;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border-radius:8px;
+  background:#fff;
+}
+
+.stage img,
+.stage video{
+  max-width:100%;
+  max-height:100%;
+  width:auto;
+  height:auto;
+  object-fit:contain;      /* NO CROPPING */
+}
+
+.stage video{
+  background:#000;
+}
+
+/* ================= META ================= */
+
+.meta{margin-top:10px}
+
+.title{
+  font-weight:700;
+  color:#4b2b7f;
+  font-size:1.05rem;
+}
+
+.caption{
+  color:var(--muted);
+  font-size:.95rem;
+  margin-top:6px;
+  min-height:2.2em;
+}
+
+/* ================= CONTROLS ================= */
+
+.controls{
+  display:flex;
+  gap:8px;
+  flex-wrap:wrap;
+  margin-top:10px;
+}
+
+.btn{
+  padding:10px 14px;
+  border-radius:999px;
+  border:none;
+  background:linear-gradient(135deg,var(--pink),#ff6fa7);
+  color:#fff;
+  font-weight:700;
+  cursor:pointer;
+}
+
+.small{
+  padding:9px 12px;
+  border-radius:10px;
+  border:none;
+  background:#fff;
+  font-weight:600;
+  cursor:pointer;
+}
+
+.playline{
+  background:#ffe8f4;
+  border-radius:999px;
+  height:10px;
+  margin-top:12px;
+}
+
+.playbar{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--pink),#ff74b8);
+}
+
+/* ================= SIDEBAR ================= */
+
+.sidebar{
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
+
+.heading{
+  font-weight:700;
+  color:#4b2b7f;
+}
+
+.thumbs{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+}
+
+.thumb{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  background:#fff;
+  border-radius:10px;
+  padding:6px;
+  cursor:pointer;
+  border:2px solid transparent;
+  width:100%;
+}
+
+.thumb.active{
+  border-color:var(--pink);
+}
+
+.thumb img{
+  width:64px;
+  height:48px;
+  object-fit:cover;
+  border-radius:6px;
+}
+
+.thumb .tmeta{
+  font-weight:600;
+  color:#4b2b7f;
+  font-size:.85rem;
+}
+
+.thumb .tcap{
+  font-size:.75rem;
+  color:var(--muted);
+}
+
+/* ================= FOOTER ================= */
+
+.footer{
+  margin-top:12px;
+  text-align:center;
+  color:var(--muted);
+}
+
+.next-row{
+  display:flex;
+  justify-content:center;
+  margin-top:12px;
+}
+
+.next-btn{
+  padding:12px 18px;
+  border-radius:999px;
+  border:none;
+  background:linear-gradient(135deg,var(--pink),#ff74b8);
+  color:#fff;
+  font-weight:800;
+  cursor:pointer;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:760px){
+  .media-area{grid-template-columns:1fr}
+  .sidebar{order:2}
+  .stage{max-height:60vh}
+}
+</style>
+</head>
+
+<body>
+
+<div class="page">
+  <h1>Play Our Moments & Memories</h1>
+  <p class="lead">Play our story — where every second feels like a piece of my heart.</p>
+
+  <div class="card">
+    <div class="media-area">
+
+      <div>
+        <div class="stage-wrap">
+          <div class="stage" id="stage">
+            <img id="stageImg" style="display:none">
+            <video id="stageVideo" controls muted playsinline style="display:none"></video>
+          </div>
+
+          <div class="meta">
+            <div class="title" id="itemTitle"></div>
+            <div class="caption" id="itemCaption"></div>
+
+            <div class="controls">
+              <button class="btn" id="playBtn">Play ▶</button>
+              <button class="small" onclick="prev()">Prev</button>
+              <button class="small" onclick="next()">Next</button>
+              <button class="small" onclick="toggleMute()">Mute</button>
+            </div>
+
+            <div class="playline"><div class="playbar" id="playbar"></div></div>
+          </div>
+        </div>
+
+        <div class="footer">Just us, being us — the sweetest memories I’ll never forget.</div>
+
+        <div class="next-row">
+          <button class="next-btn" onclick="location.href='7.html'">
+            Continue to Birthday Surprises 🎆 →
+          </button>
+        </div>
+      </div>
+
+      <aside class="sidebar">
+        <div class="heading">Memories</div>
+        <div class="thumbs" id="thumbs"></div>
+      </aside>
+
+    </div>
+  </div>
+</div>
+
+<script>
+const items=[
+ {type:"image",title:"Best frnds",caption:"Prime Moments.",src:"/bdy/img/rp4.jpg",thumb:"/bdy/img/rp1.jpg",duration:4},
+ {type:"image",title:"My one and only love",caption:"Our first moments together.",src:"/bdy/img/rp1.jpg",thumb:"/bdy/img/rp1.jpg",duration:4},
+ {type:"video",title:"Couple date",caption:"And that makes us much closer.",src:"/bdy/img/r1.mp4",thumb:"/bdy/img/rp1.jpg"},
+ {type:"image",title:"Moments together",caption:"You are always my love.",src:"/bdy/img/rp2.jpg",thumb:"/bdy/img/rp2.jpg",duration:4},
+ {type:"image",title:"Soulmate",caption:"Meri crime partner.",src:"/bdy/img/rp5.jpg",thumb:"/bdy/img/rp1.jpg",duration:4},
+ {type:"video",title:"Memories",caption:"Beautiful moments together.",src:"/bdy/img/r2.mp4",thumb:"/bdy/img/rp2.jpg"},
+];
+
+let index=0;
+let playing=false;
+let timer=null;
+
+const img=document.getElementById("stageImg");
+const video=document.getElementById("stageVideo");
+const title=document.getElementById("itemTitle");
+const caption=document.getElementById("itemCaption");
+const thumbs=document.getElementById("thumbs");
+const playBtn=document.getElementById("playBtn");
+
+function renderThumbs(){
+ thumbs.innerHTML="";
+ items.forEach((it,i)=>{
+  const t=document.createElement("div");
+  t.className="thumb"+(i===index?" active":"");
+  t.onclick=()=>show(i);
+  t.innerHTML=`<img src="${it.thumb}"><div><div class="tmeta">${it.title}</div><div class="tcap">${it.caption}</div></div>`;
+  thumbs.appendChild(t);
+ });
+}
+
+function show(i){
+ clearTimeout(timer);
+ index=(i+items.length)%items.length;
+ const it=items[index];
+ title.textContent=it.title;
+ caption.textContent=it.caption;
+
+ img.style.display="none";
+ video.style.display="none";
+ video.pause();
+
+ if(it.type==="image"){
+  img.src=it.src;
+  img.style.display="block";
+  if(playing) timer=setTimeout(next,it.duration*1000);
+ }else{
+  video.src=it.src;
+  video.style.display="block";
+  if(playing) video.play();
+  video.onended=next;
+ }
+ renderThumbs();
+}
+
+function play(){
+ playing=true;
+ playBtn.textContent="Playing ⏸";
+ const it=items[index];
+ if(it.type==="image") timer=setTimeout(next,it.duration*1000);
+ else video.play();
+}
+
+function pause(){
+ playing=false;
+ playBtn.textContent="Play ▶";
+ clearTimeout(timer);
+ video.pause();
+}
+
+playBtn.onclick=()=>playing?pause():play();
+function next(){show(index+1);if(playing)play();}
+function prev(){show(index-1);if(playing)play();}
+function toggleMute(){video.muted=!video.muted;}
+
+renderThumbs();
+show(0);
+</script>
+
+</body>
+</html>
+
+
+

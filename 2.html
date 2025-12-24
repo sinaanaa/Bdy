@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>A Birthday Love Letter 💌</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(180deg, #ffeef8, #ffe6fa);
+    }
+
+    .wrapper {
+      max-width: 420px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #f03b8f;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #7b6a8c;
+      margin-bottom: 22px;
+    }
+
+    .card {
+      background: #fff7de;
+      border-radius: 26px;
+      padding: 26px 18px 28px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+    }
+
+    /* Envelope */
+    .envelope-wrapper {
+      position: relative;
+      margin: 0 auto 18px;
+      max-width: 360px;
+      height: 190px;
+    }
+
+    .envelope {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 22px;
+      background: linear-gradient(180deg, #ffe0f1, #ffd0ec);
+      box-shadow: 0 15px 35px rgba(240, 59, 143, 0.25);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .envelope:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 22px 45px rgba(240, 59, 143, 0.35);
+    }
+
+    /* Top flap */
+    .envelope::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-style: solid;
+      border-width: 0 50% 72% 50%;
+      border-color: transparent transparent #ffb9dd transparent;
+      width: 0;
+      height: 0;
+    }
+
+    /* Bottom flap */
+    .envelope::after {
+      content: "";
+      position: absolute;
+      bottom: -40%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 140%;
+      height: 100%;
+      background: linear-gradient(180deg, #ffd1ea, #ffc0e4);
+      transform-origin: top;
+      border-radius: 40px;
+    }
+
+    /* Seal circle */
+    .seal {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #f03b8f, #ff74b8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2;
+      box-shadow: 0 10px 25px rgba(240, 59, 143, 0.5);
+    }
+
+    .seal span {
+      font-size: 1.4rem;
+    }
+
+    /* Little corner hearts */
+    .corner-heart {
+      position: absolute;
+      font-size: 1.2rem;
+      z-index: 2;
+    }
+
+    .corner-heart.left {
+      bottom: 10px;
+      left: 12px;
+    }
+
+    .corner-heart.right {
+      top: 10px;
+      right: 16px;
+    }
+
+    .text-below {
+      margin-top: 12px;
+      font-size: 0.98rem;
+      color: #7b6a8c;
+    }
+
+    .btn {
+      margin-top: 16px;
+      display: inline-block;
+      padding: 12px 26px;
+      border-radius: 999px;
+      background: #ffe9ff;
+      color: #f03b8f;
+      font-weight: 600;
+      font-size: 0.98rem;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: transform 0.15s ease, box-shadow 0.15s ease;
+      text-decoration: none;
+    }
+
+    .btn:active {
+      transform: scale(0.96);
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.18);
+    }
+  </style>
+</head>
+<body>
+
+<div class="wrapper">
+  <h1 class="title">A Birthday Love Letter 💌</h1>
+  <p class="subtitle">From my heart to my sweetheart</p>
+
+  <div class="card">
+    <!-- Clickable envelope -->
+    <a href="3.html" style="text-decoration:none; color:inherit;">
+      <div class="envelope-wrapper">
+        <div class="envelope">
+          <div class="seal"><span>💗</span></div>
+          <div class="corner-heart left">💖</div>
+          <div class="corner-heart right">💕</div>
+        </div>
+      </div>
+    </a>
+
+    <p class="text-below">Click to open your birthday surprise</p>
+
+    <!-- Button that also opens the letter -->
+    <a href="3.html" class="btn">
+      Birthday Special Delivery 🎂
+    </a>
+  </div>
+</div>
+
+</body>
+</html>

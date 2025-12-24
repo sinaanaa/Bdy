@@ -1,0 +1,145 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>It's Wish Time! 🎂</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: "Segoe UI", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: linear-gradient(180deg, #ffeef8, #ffe6fa);
+    }
+
+    .page {
+      max-width: 430px;
+      width: 100%;
+      text-align: center;
+    }
+
+    .title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: #f03b8f;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: #7b6a8c;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      background: #fff7de;
+      border-radius: 26px;
+      padding: 22px 18px 28px;
+      box-shadow: 0 18px 40px rgba(0,0,0,.16);
+    }
+
+    .wish-image {
+      border-radius: 18px;
+      overflow: hidden;
+      padding: 4px;
+      background: #ffd5f4;
+      box-shadow: 0 10px 25px rgba(240,59,143,.25);
+      margin-bottom: 16px;
+    }
+
+    .wish-image img {
+      width: 100%;
+      display: block;
+      border-radius: 14px;
+    }
+
+    .emoji-divider {
+      font-size: 1.9rem;
+      margin: 4px 0 12px;
+    }
+
+    .wish-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #f03b8f;
+      margin-bottom: 8px;
+    }
+
+    .text-main {
+      font-size: 1rem;
+      color: #5b4a60;
+      margin-bottom: 6px;
+    }
+
+    .text-sub {
+      font-size: 0.9rem;
+      color: #8b7a98;
+      margin-bottom: 18px;
+    }
+
+    .btn {
+      border: none;
+      outline: none;
+      cursor: pointer;
+      padding: 14px 34px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #f03b8f, #ff74b8);
+      color: #fff;
+      font-weight: 700;
+      font-size: 1rem;
+      box-shadow: 0 14px 32px rgba(240,59,143,.45);
+      text-decoration: none;
+      display: inline-block;
+      transition: transform .15s ease, box-shadow .15s ease;
+    }
+
+    .btn:active {
+      transform: scale(.96);
+      box-shadow: 0 7px 16px rgba(240,59,143,.5);
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <h1 class="title">It's Wish Time! 🎂</h1>
+  <p class="subtitle">Make your birthday wish come true! 🎈</p>
+
+  <div class="card">
+    <div class="wish-image">
+      <!-- change src to your Hello Kitty image -->
+      <img src="/bdy/img/sticker2cut.jpg" alt="Birthday characters" height="400px" width="200px">
+    </div>
+
+    <div class="emoji-divider">🎂</div>
+
+    <h2 class="wish-title">Time to Make a Wish! 🌌</h2>
+
+    <p class="text-main">
+      Close your eyes and make your birthday wish! ✨
+    </p>
+    <p class="text-sub">
+      Think of something wonderful for your new year!
+    </p>
+
+    <!-- change href to next page in your flow -->
+    <a href="5.html" class="btn">
+      I've Made My Wish! 🌟
+    </a>
+  </div>
+</div>
+
+</body>
+</html>
